@@ -16,10 +16,7 @@ import httpx
 from mcp.server import Server
 from mcp.server.sse import SseServerTransport
 from mcp.types import Tool, TextContent
-from starlette.applications import Starlette
-from starlette.requests import Request
 from starlette.responses import JSONResponse
-from starlette.routing import Route, Mount
 import uvicorn
 
 PORT = int(os.environ.get("PORT", 8000))
@@ -338,26 +335,47 @@ def _fallback_swiggy(city: str, query: str) -> str:
     )
 
 
-# ── HTTP app ──────────────────────────────────────────────────────────────────
+# ── HTTP app (raw ASGI dispatcher — avoids starlette 1.x None-return bug) ────
 
-async def handle_sse(request: Request):
-    async with sse_transport.connect_sse(
-        request.scope, request.receive, request._send
-    ) as streams:
-        await server.run(streams[0], streams[1], server.create_initialization_options())
+async def app(scope, receive, send):
+    """
+    Raw ASGI dispatcher. We bypass Starlette's Route wrapper because the MCP
+    SSE transport writes directly to `send` and never returns a Response object.
+    Starlette 1.0 requires Route handlers to return a Response, which causes
+    a TypeError when the handler returns None. Using raw ASGI avoids this.
+    """
+    if scope["type"] == "lifespan":
+        # Handle lifespan events (startup/shutdown)
+        while True:
+            message = await receive()
+            if message["type"] == "lifespan.startup":
+                await send({"type": "lifespan.startup.complete"})
+            elif message["type"] == "lifespan.shutdown":
+                await send({"type": "lifespan.shutdown.complete"})
+                return
 
+    if scope["type"] != "http":
+        return
 
-async def health(request: Request):
-    return JSONResponse({"status": "ok", "service": "swiggy-mcp"})
+    path = scope.get("path", "")
 
+    if path == "/health" or path == "/":
+        response = JSONResponse({"status": "ok", "service": "swiggy-mcp"})
+        await response(scope, receive, send)
 
-app = Starlette(
-    routes=[
-        Route("/health", health),
-        Route("/sse", handle_sse),
-        Mount("/messages/", app=sse_transport.handle_post_message),
-    ]
-)
+    elif path == "/sse":
+        async with sse_transport.connect_sse(scope, receive, send) as streams:
+            await server.run(
+                streams[0], streams[1], server.create_initialization_options()
+            )
+
+    elif path.startswith("/messages/"):
+        await sse_transport.handle_post_message(scope, receive, send)
+
+    else:
+        response = JSONResponse({"error": "not found"}, status_code=404)
+        await response(scope, receive, send)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=PORT, log_level="info")
