@@ -1,0 +1,42 @@
+services:
+  # ── Wolfram Alpha MCP ────────────────────────────────────
+  - type: web
+    name: wolfram-alpha-mcp
+    runtime: docker
+    dockerfilePath: ./wolfram-alpha/Dockerfile
+    dockerContext: ./wolfram-alpha
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: WOLFRAM_APP_ID
+        sync: false   # You set this manually in Render dashboard
+
+  # ── Indian Railways / IRCTC MCP ──────────────────────────
+  - type: web
+    name: irctc-mcp
+    runtime: docker
+    dockerfilePath: ./irctc/Dockerfile
+    dockerContext: ./irctc
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: RAPIDAPI_KEY
+        value: ""     # Optional — set for live PNR/train data
+
+  # ── Zomato MCP ───────────────────────────────────────────
+  - type: web
+    name: zomato-mcp
+    runtime: docker
+    dockerfilePath: ./zomato/Dockerfile
+    dockerContext: ./zomato
+    plan: free
+    healthCheckPath: /health
+
+  # ── Swiggy MCP ───────────────────────────────────────────
+  - type: web
+    name: swiggy-mcp
+    runtime: docker
+    dockerfilePath: ./swiggy/Dockerfile
+    dockerContext: ./swiggy
+    plan: free
+    healthCheckPath: /health
