@@ -40,3 +40,12 @@ services:
     dockerContext: ./swiggy
     plan: free
     healthCheckPath: /health
+
+  # ── YouTube Transcript MCP ───────────────────────────────
+  - type: web
+    name: youtube-mcp
+    runtime: docker
+    dockerfilePath: ./youtube/Dockerfile
+    dockerContext: ./youtube
+    plan: free
+    healthCheckPath: /health
