@@ -131,12 +131,10 @@ def _get_transcript(video_id_or_url: str, lang: str = "en") -> str:
     try:
         transcript_list = YouTubeTranscriptApi.list_transcripts(vid)
 
-        # Try requested language first
         try:
             transcript = transcript_list.find_transcript([lang])
             used_lang = lang
         except NoTranscriptFound:
-            # Fall back to first available transcript
             available = list(transcript_list)
             if not available:
                 return f"No transcripts available for video: {vid}"
