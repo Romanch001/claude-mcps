@@ -1,0 +1,47 @@
+name: Keep Render Services Alive
+
+# Ping all MCP health endpoints every 10 minutes so Render free-tier
+# services never go to sleep (Render spins down after 15 min inactivity).
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:   # allow manual trigger from GitHub Actions UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping all MCP health endpoints
+        run: |
+          # Standard service URLs — update any that have a random suffix in your Render dashboard
+          URLS=(
+            "https://airbnb-mcp.onrender.com/health"
+            "https://apple-health-mcp.onrender.com/health"
+            "https://arduino-mcp.onrender.com/health"
+            "https://blender-mcp.onrender.com/health"
+            "https://discord-mcp.onrender.com/health"
+            "https://freecad-mcp.onrender.com/health"
+            "https://google-maps-mcp.onrender.com/health"
+            "https://google-photos-mcp.onrender.com/health"
+            "https://google-sheets-mcp.onrender.com/health"
+            "https://google-translate-mcp.onrender.com/health"
+            "https://gtfs-mcp.onrender.com/health"
+            "https://home-assistant-mcp.onrender.com/health"
+            "https://irctc-mcp.onrender.com/health"
+            "https://myfitnesspal-mcp.onrender.com/health"
+            "https://notion-mcp.onrender.com/health"
+            "https://nptel-mcp.onrender.com/health"
+            "https://openscad-mcp.onrender.com/health"
+            "https://reddit-mcp.onrender.com/health"
+            "https://spotify-mcp.onrender.com/health"
+            "https://strava-mcp.onrender.com/health"
+            "https://swiggy-mcp.onrender.com/health"
+            "https://wikipedia-mcp.onrender.com/health"
+            "https://wolfram-alpha-mcp.onrender.com/health"
+            "https://youtube-mcp.onrender.com/health"
+            "https://zomato-mcp.onrender.com/health"
+          )
+          for url in "${URLS[@]}"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$url" || echo "ERR")
+            echo "$code  $url"
+          done

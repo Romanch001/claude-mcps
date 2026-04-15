@@ -10,7 +10,7 @@ from mcp.server.sse import SseServerTransport
 from mcp.types import Tool, TextContent
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, Response
 from starlette.routing import Route, Mount
 import uvicorn
 
@@ -421,6 +421,7 @@ async def handle_sse(request: Request):
         request.scope, request.receive, request._send
     ) as streams:
         await server.run(streams[0], streams[1], server.create_initialization_options())
+    return Response()
 
 
 async def health(request: Request):

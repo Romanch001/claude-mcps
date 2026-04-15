@@ -1,4 +1,4 @@
-mcp[cli]>=1.0.0
+mcp[cli]==1.9.4
 youtube-transcript-api>=0.6.3
 uvicorn>=0.30.0
 starlette>=0.40.0
