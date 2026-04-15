@@ -46,10 +46,6 @@ youtube-mcp.{$DOMAIN} {
     reverse_proxy youtube-mcp:8000
 }
 
-swiggy-mcp.{$DOMAIN} {
-    reverse_proxy swiggy-mcp:8000
-}
-
 zomato-mcp.{$DOMAIN} {
     reverse_proxy zomato-mcp:8000
 }

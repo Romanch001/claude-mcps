@@ -117,14 +117,6 @@ services:
     networks:
       - mcp-net
 
-  swiggy-mcp:
-    build: ./swiggy
-    restart: unless-stopped
-    environment:
-      PORT: "8000"
-    networks:
-      - mcp-net
-
   zomato-mcp:
     build: ./zomato
     restart: unless-stopped
