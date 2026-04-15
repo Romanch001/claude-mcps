@@ -49,3 +49,221 @@ services:
     dockerContext: ./youtube
     plan: free
     healthCheckPath: /health
+
+  # ── Blender MCP ──────────────────────────────────────────
+  - type: web
+    name: blender-mcp
+    runtime: docker
+    dockerfilePath: ./blender-mcp/Dockerfile
+    dockerContext: ./blender-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── FreeCAD MCP ──────────────────────────────────────────
+  - type: web
+    name: freecad-mcp
+    runtime: docker
+    dockerfilePath: ./freecad-mcp/Dockerfile
+    dockerContext: ./freecad-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── OpenSCAD MCP ─────────────────────────────────────────
+  - type: web
+    name: openscad-mcp
+    runtime: docker
+    dockerfilePath: ./openscad-mcp/Dockerfile
+    dockerContext: ./openscad-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── Arduino MCP ──────────────────────────────────────────
+  - type: web
+    name: arduino-mcp
+    runtime: docker
+    dockerfilePath: ./arduino-mcp/Dockerfile
+    dockerContext: ./arduino-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── Home Assistant MCP ───────────────────────────────────
+  - type: web
+    name: home-assistant-mcp
+    runtime: docker
+    dockerfilePath: ./home-assistant-mcp/Dockerfile
+    dockerContext: ./home-assistant-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: HA_URL
+        sync: false   # e.g. https://your-ha.duckdns.org:8123
+      - key: HA_TOKEN
+        sync: false   # Long-lived access token from HA Profile page
+
+  # ── Spotify MCP ──────────────────────────────────────────
+  - type: web
+    name: spotify-mcp
+    runtime: docker
+    dockerfilePath: ./spotify-mcp/Dockerfile
+    dockerContext: ./spotify-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SPOTIFY_CLIENT_ID
+        sync: false   # from developer.spotify.com/dashboard
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+
+  # ── Reddit MCP ───────────────────────────────────────────
+  - type: web
+    name: reddit-mcp
+    runtime: docker
+    dockerfilePath: ./reddit-mcp/Dockerfile
+    dockerContext: ./reddit-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── Discord MCP ──────────────────────────────────────────
+  - type: web
+    name: discord-mcp
+    runtime: docker
+    dockerfilePath: ./discord-mcp/Dockerfile
+    dockerContext: ./discord-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DISCORD_WEBHOOK_URL
+        sync: false   # Discord channel → Integrations → Webhooks
+
+  # ── Wikipedia MCP ────────────────────────────────────────
+  - type: web
+    name: wikipedia-mcp
+    runtime: docker
+    dockerfilePath: ./wikipedia-mcp/Dockerfile
+    dockerContext: ./wikipedia-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── Notion MCP ───────────────────────────────────────────
+  - type: web
+    name: notion-mcp
+    runtime: docker
+    dockerfilePath: ./notion-mcp/Dockerfile
+    dockerContext: ./notion-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NOTION_API_KEY
+        sync: false   # notion.so/my-integrations → Internal Integration Token
+
+  # ── Google Maps MCP ──────────────────────────────────────
+  - type: web
+    name: google-maps-mcp
+    runtime: docker
+    dockerfilePath: ./google-maps-mcp/Dockerfile
+    dockerContext: ./google-maps-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false   # console.cloud.google.com → Geocoding+Places+Directions APIs
+
+  # ── Google Sheets MCP ────────────────────────────────────
+  - type: web
+    name: google-sheets-mcp
+    runtime: docker
+    dockerfilePath: ./google-sheets-mcp/Dockerfile
+    dockerContext: ./google-sheets-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false   # Full JSON content of service account key file
+
+  # ── Google Translate MCP ─────────────────────────────────
+  - type: web
+    name: google-translate-mcp
+    runtime: docker
+    dockerfilePath: ./google-translate-mcp/Dockerfile
+    dockerContext: ./google-translate-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GOOGLE_TRANSLATE_API_KEY
+        sync: false   # console.cloud.google.com → Cloud Translation API (free: 500k chars/mo)
+
+  # ── Google Photos MCP ────────────────────────────────────
+  - type: web
+    name: google-photos-mcp
+    runtime: docker
+    dockerfilePath: ./google-photos-mcp/Dockerfile
+    dockerContext: ./google-photos-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GOOGLE_PHOTOS_ACCESS_TOKEN
+        sync: false   # OAuth token via developers.google.com/oauthplayground
+
+  # ── Strava MCP ───────────────────────────────────────────
+  - type: web
+    name: strava-mcp
+    runtime: docker
+    dockerfilePath: ./strava-mcp/Dockerfile
+    dockerContext: ./strava-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: STRAVA_CLIENT_ID
+        sync: false   # strava.com/settings/api
+      - key: STRAVA_CLIENT_SECRET
+        sync: false
+      - key: STRAVA_REFRESH_TOKEN
+        sync: false   # Obtained via initial OAuth flow (see server.py docstring)
+
+  # ── MyFitnessPal / Nutrition MCP ─────────────────────────
+  - type: web
+    name: myfitnesspal-mcp
+    runtime: docker
+    dockerfilePath: ./myfitnesspal-mcp/Dockerfile
+    dockerContext: ./myfitnesspal-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── Apple Health MCP ─────────────────────────────────────
+  - type: web
+    name: apple-health-mcp
+    runtime: docker
+    dockerfilePath: ./apple-health-mcp/Dockerfile
+    dockerContext: ./apple-health-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── GTFS Public Transit MCP ──────────────────────────────
+  - type: web
+    name: gtfs-mcp
+    runtime: docker
+    dockerfilePath: ./gtfs-mcp/Dockerfile
+    dockerContext: ./gtfs-mcp
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GTFS_FEED_URL
+        value: ""     # Optional: URL to a GTFS zip feed. Defaults to Mumbai/Pune/Delhi/Bangalore
+
+  # ── Airbnb MCP ───────────────────────────────────────────
+  - type: web
+    name: airbnb-mcp
+    runtime: docker
+    dockerfilePath: ./airbnb-mcp/Dockerfile
+    dockerContext: ./airbnb-mcp
+    plan: free
+    healthCheckPath: /health
+
+  # ── NPTEL MCP ────────────────────────────────────────────
+  - type: web
+    name: nptel-mcp
+    runtime: docker
+    dockerfilePath: ./nptel-mcp/Dockerfile
+    dockerContext: ./nptel-mcp
+    plan: free
+    healthCheckPath: /health
