@@ -12,20 +12,20 @@ jobs:
       - name: Ping all MCP health endpoints
         run: |
           URLS=(
-            "https://apple-health-mcp.YOUR_DOMAIN/health"
-            "https://strava-mcp.YOUR_DOMAIN/health"
-            "https://google-photos-mcp.YOUR_DOMAIN/health"
-            "https://google-translate-mcp.YOUR_DOMAIN/health"
-            "https://google-sheets-mcp.YOUR_DOMAIN/health"
-            "https://google-maps-mcp.YOUR_DOMAIN/health"
-            "https://discord-mcp.YOUR_DOMAIN/health"
-            "https://openscad-mcp.YOUR_DOMAIN/health"
-            "https://freecad-mcp.YOUR_DOMAIN/health"
-            "https://blender-mcp.YOUR_DOMAIN/health"
-            "https://youtube-mcp.YOUR_DOMAIN/health"
-            "https://swiggy-mcp.YOUR_DOMAIN/health"
-            "https://zomato-mcp.YOUR_DOMAIN/health"
-            "https://wolfram-alpha-mcp.YOUR_DOMAIN/health"
+            "https://apple-health-mcp.159.65.156.250.nip.io/health"
+            "https://strava-mcp.159.65.156.250.nip.io/health"
+            "https://google-photos-mcp.159.65.156.250.nip.io/health"
+            "https://google-translate-mcp.159.65.156.250.nip.io/health"
+            "https://google-sheets-mcp.159.65.156.250.nip.io/health"
+            "https://google-maps-mcp.159.65.156.250.nip.io/health"
+            "https://discord-mcp.159.65.156.250.nip.io/health"
+            "https://openscad-mcp.159.65.156.250.nip.io/health"
+            "https://freecad-mcp.159.65.156.250.nip.io/health"
+            "https://blender-mcp.159.65.156.250.nip.io/health"
+            "https://youtube-mcp.159.65.156.250.nip.io/health"
+            "https://swiggy-mcp.159.65.156.250.nip.io/health"
+            "https://zomato-mcp.159.65.156.250.nip.io/health"
+            "https://wolfram-alpha-mcp.159.65.156.250.nip.io/health"
           )
           for url in "${URLS[@]}"; do
             code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$url" || echo "ERR")
