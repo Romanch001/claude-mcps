@@ -98,7 +98,7 @@ def build_compose(active_services):
         lines.append(f"    environment:\n")
         lines.append(f"      PORT: \"8000\"\n")
         for k in env_keys:
-            lines.append(f"      {k}: \"{{{{{k}:-}}}}\"\n")
+            lines.append(f'      {k}: "${{{k}:-}}"\n')
         lines.append(f"    networks:\n")
         lines.append(f"      - mcp-net\n\n")
 
@@ -168,13 +168,14 @@ def main():
 
     if DRY_RUN:
         print("\n[DRY RUN] No changes made.")
-    else:
-        print("\nDeleting suspended services from Render...")
-        with httpx.Client(headers=HDR, timeout=30) as client:
-            for s in suspended:
-                ok = delete_service(client, s["id"], s["name"])
-                print(f"  {'DELETED' if ok else 'FAILED ':7s} {s['name']}")
-                time.sleep(0.3)
+        return
+
+    print("\nDeleting suspended services from Render...")
+    with httpx.Client(headers=HDR, timeout=30) as client:
+        for s in suspended:
+            ok = delete_service(client, s["id"], s["name"])
+            print(f"  {'DELETED' if ok else 'FAILED ':7s} {s['name']}")
+            time.sleep(0.3)
 
     # Write new docker-compose.yml
     compose = build_compose(active)
