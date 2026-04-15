@@ -190,6 +190,7 @@ def main():
     print(f"Wrote Caddyfile with {len(active)} virtual hosts.")
 
     # Write new keepalive.yml
+    import os; os.makedirs(".github/workflows", exist_ok=True)
     keepalive = build_keepalive(active)
     with open(".github/workflows/keepalive.yml", "w") as f:
         f.write(keepalive)
