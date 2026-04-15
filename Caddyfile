@@ -1,0 +1,109 @@
+# Caddyfile — reverse proxy for all 25 MCP servers on a single DigitalOcean Droplet.
+#
+# Requirements:
+#   - Set DOMAIN env var before starting (e.g. export DOMAIN=mcps.example.com)
+#   - Add a wildcard DNS A record:  *.mcps.example.com → <Droplet IP>
+#   - Caddy handles TLS automatically via Let's Encrypt.
+#
+# Each MCP is then reachable at:
+#   https://strava-mcp.mcps.example.com/sse       ← claude.ai MCP URL
+#   https://strava-mcp.mcps.example.com/health    ← keepalive ping
+
+{
+    email {$ADMIN_EMAIL:admin@example.com}
+}
+
+# ── Design / CAD Tools ────────────────────────────────────────────────────────
+blender-mcp.{$DOMAIN} {
+    reverse_proxy blender-mcp:8000
+}
+freecad-mcp.{$DOMAIN} {
+    reverse_proxy freecad-mcp:8000
+}
+openscad-mcp.{$DOMAIN} {
+    reverse_proxy openscad-mcp:8000
+}
+arduino-mcp.{$DOMAIN} {
+    reverse_proxy arduino-mcp:8000
+}
+
+# ── Smart Home ────────────────────────────────────────────────────────────────
+home-assistant-mcp.{$DOMAIN} {
+    reverse_proxy home-assistant-mcp:8000
+}
+
+# ── Music / Entertainment ─────────────────────────────────────────────────────
+spotify-mcp.{$DOMAIN} {
+    reverse_proxy spotify-mcp:8000
+}
+youtube-mcp.{$DOMAIN} {
+    reverse_proxy youtube-mcp:8000
+}
+
+# ── Social / Community ────────────────────────────────────────────────────────
+reddit-mcp.{$DOMAIN} {
+    reverse_proxy reddit-mcp:8000
+}
+discord-mcp.{$DOMAIN} {
+    reverse_proxy discord-mcp:8000
+}
+
+# ── Knowledge / Reference ─────────────────────────────────────────────────────
+wikipedia-mcp.{$DOMAIN} {
+    reverse_proxy wikipedia-mcp:8000
+}
+wolfram-alpha-mcp.{$DOMAIN} {
+    reverse_proxy wolfram-alpha-mcp:8000
+}
+
+# ── Productivity ──────────────────────────────────────────────────────────────
+notion-mcp.{$DOMAIN} {
+    reverse_proxy notion-mcp:8000
+}
+nptel-mcp.{$DOMAIN} {
+    reverse_proxy nptel-mcp:8000
+}
+
+# ── Google Services ───────────────────────────────────────────────────────────
+google-maps-mcp.{$DOMAIN} {
+    reverse_proxy google-maps-mcp:8000
+}
+google-sheets-mcp.{$DOMAIN} {
+    reverse_proxy google-sheets-mcp:8000
+}
+google-translate-mcp.{$DOMAIN} {
+    reverse_proxy google-translate-mcp:8000
+}
+google-photos-mcp.{$DOMAIN} {
+    reverse_proxy google-photos-mcp:8000
+}
+
+# ── Fitness / Health ──────────────────────────────────────────────────────────
+strava-mcp.{$DOMAIN} {
+    reverse_proxy strava-mcp:8000
+}
+myfitnesspal-mcp.{$DOMAIN} {
+    reverse_proxy myfitnesspal-mcp:8000
+}
+apple-health-mcp.{$DOMAIN} {
+    reverse_proxy apple-health-mcp:8000
+}
+
+# ── Transport / Travel ────────────────────────────────────────────────────────
+gtfs-mcp.{$DOMAIN} {
+    reverse_proxy gtfs-mcp:8000
+}
+irctc-mcp.{$DOMAIN} {
+    reverse_proxy irctc-mcp:8000
+}
+
+# ── Food / Lifestyle ──────────────────────────────────────────────────────────
+airbnb-mcp.{$DOMAIN} {
+    reverse_proxy airbnb-mcp:8000
+}
+swiggy-mcp.{$DOMAIN} {
+    reverse_proxy swiggy-mcp:8000
+}
+zomato-mcp.{$DOMAIN} {
+    reverse_proxy zomato-mcp:8000
+}

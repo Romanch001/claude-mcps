@@ -1,0 +1,263 @@
+version: '3.8'
+
+# DigitalOcean Droplet deployment — all 25 MCP servers + Caddy reverse proxy.
+#
+# Setup:
+#   1. Copy .env.example to .env and fill in your API keys
+#   2. Set DOMAIN= to your domain (e.g. example.com → strava-mcp.example.com)
+#   3. Point *.example.com DNS A record to this Droplet's IP
+#   4. docker compose up -d --build
+#
+# Each MCP is reachable at:  https://<service-name>.<DOMAIN>/sse
+# Health check:              https://<service-name>.<DOMAIN>/health
+
+services:
+
+  # ── Reverse Proxy ────────────────────────────────────────────────────────────
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - mcp-net
+
+  # ── Design / CAD Tools ───────────────────────────────────────────────────────
+  blender-mcp:
+    build: ./blender-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  freecad-mcp:
+    build: ./freecad-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  openscad-mcp:
+    build: ./openscad-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  arduino-mcp:
+    build: ./arduino-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  # ── Smart Home ───────────────────────────────────────────────────────────────
+  home-assistant-mcp:
+    build: ./home-assistant-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      HA_URL: "${HA_URL:-}"
+      HA_TOKEN: "${HA_TOKEN:-}"
+    networks:
+      - mcp-net
+
+  # ── Music / Entertainment ─────────────────────────────────────────────────────
+  spotify-mcp:
+    build: ./spotify-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID:-}"
+      SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET:-}"
+    networks:
+      - mcp-net
+
+  youtube-mcp:
+    build: ./youtube
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  # ── Social / Community ────────────────────────────────────────────────────────
+  reddit-mcp:
+    build: ./reddit-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  discord-mcp:
+    build: ./discord-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      DISCORD_WEBHOOK_URL: "${DISCORD_WEBHOOK_URL:-}"
+    networks:
+      - mcp-net
+
+  # ── Knowledge / Reference ─────────────────────────────────────────────────────
+  wikipedia-mcp:
+    build: ./wikipedia-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  wolfram-alpha-mcp:
+    build: ./wolfram-alpha
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      WOLFRAM_APP_ID: "${WOLFRAM_APP_ID:-}"
+    networks:
+      - mcp-net
+
+  # ── Productivity ──────────────────────────────────────────────────────────────
+  notion-mcp:
+    build: ./notion-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      NOTION_API_KEY: "${NOTION_API_KEY:-}"
+    networks:
+      - mcp-net
+
+  nptel-mcp:
+    build: ./nptel-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  # ── Google Services ───────────────────────────────────────────────────────────
+  google-maps-mcp:
+    build: ./google-maps-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY:-}"
+    networks:
+      - mcp-net
+
+  google-sheets-mcp:
+    build: ./google-sheets-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      GOOGLE_SERVICE_ACCOUNT_JSON: "${GOOGLE_SERVICE_ACCOUNT_JSON:-}"
+    networks:
+      - mcp-net
+
+  google-translate-mcp:
+    build: ./google-translate-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      GOOGLE_TRANSLATE_API_KEY: "${GOOGLE_TRANSLATE_API_KEY:-}"
+    networks:
+      - mcp-net
+
+  google-photos-mcp:
+    build: ./google-photos-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      GOOGLE_PHOTOS_ACCESS_TOKEN: "${GOOGLE_PHOTOS_ACCESS_TOKEN:-}"
+    networks:
+      - mcp-net
+
+  # ── Fitness / Health ──────────────────────────────────────────────────────────
+  strava-mcp:
+    build: ./strava-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      STRAVA_CLIENT_ID: "${STRAVA_CLIENT_ID:-}"
+      STRAVA_CLIENT_SECRET: "${STRAVA_CLIENT_SECRET:-}"
+      STRAVA_REFRESH_TOKEN: "${STRAVA_REFRESH_TOKEN:-}"
+    networks:
+      - mcp-net
+
+  myfitnesspal-mcp:
+    build: ./myfitnesspal-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  apple-health-mcp:
+    build: ./apple-health-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  # ── Transport / Travel ────────────────────────────────────────────────────────
+  gtfs-mcp:
+    build: ./gtfs-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      GTFS_FEED_URL: "${GTFS_FEED_URL:-}"
+    networks:
+      - mcp-net
+
+  irctc-mcp:
+    build: ./irctc
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      RAPIDAPI_KEY: "${RAPIDAPI_KEY:-}"
+    networks:
+      - mcp-net
+
+  # ── Food / Lifestyle ──────────────────────────────────────────────────────────
+  airbnb-mcp:
+    build: ./airbnb-mcp
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  swiggy-mcp:
+    build: ./swiggy
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+  zomato-mcp:
+    build: ./zomato
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+    networks:
+      - mcp-net
+
+networks:
+  mcp-net:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
