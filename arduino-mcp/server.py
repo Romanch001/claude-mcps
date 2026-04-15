@@ -584,7 +584,7 @@ app = Starlette(
     routes=[
         Route("/health", health),
         Route("/sse", handle_sse),
-        Mount("/messages/", app=sse_transport.handle_post_message),
+        Route("/messages/", sse_transport.handle_post_message),
     ]
 )
 

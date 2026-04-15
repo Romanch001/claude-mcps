@@ -313,7 +313,7 @@ def _calc_dims(shape: str, dims: dict) -> str:
     return f"Shape '{shape}' not yet supported. Supported: box, cylinder, sphere, cone."
 
 
-def _constraints() -> str:
+def _constraints(context: str = "") -> str:
     return """\
 **Sketcher Constraints Reference**
 
@@ -354,7 +354,7 @@ app = Starlette(
     routes=[
         Route("/health", health),
         Route("/sse", handle_sse),
-        Mount("/messages/", app=sse_transport.handle_post_message),
+        Route("/messages/", sse_transport.handle_post_message),
     ]
 )
 
