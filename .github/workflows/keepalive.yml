@@ -13,15 +13,21 @@ jobs:
     steps:
       - name: Ping all MCP health endpoints
         run: |
-          # Standard service URLs — update any that have a random suffix in your Render dashboard
+          # Confirmed URLs (from Render dashboard).
+          # For any service still showing a wrong URL, copy it from
+          # dashboard.render.com → service → Settings → URL and update here.
           URLS=(
+            # ── Confirmed exact URLs ─────────────────────────────────────
+            "https://arduino-mcp.onrender.com/health"
+            "https://google-maps-mcp-kz8m.onrender.com/health"
+            "https://strava-mcp-jujn.onrender.com/health"
+            "https://swiggy-mcp-24un.onrender.com/health"
+            # ── Standard-name services (update if your dashboard shows a suffix) ──
             "https://airbnb-mcp.onrender.com/health"
             "https://apple-health-mcp.onrender.com/health"
-            "https://arduino-mcp.onrender.com/health"
             "https://blender-mcp.onrender.com/health"
             "https://discord-mcp.onrender.com/health"
             "https://freecad-mcp.onrender.com/health"
-            "https://google-maps-mcp.onrender.com/health"
             "https://google-photos-mcp.onrender.com/health"
             "https://google-sheets-mcp.onrender.com/health"
             "https://google-translate-mcp.onrender.com/health"
@@ -34,8 +40,6 @@ jobs:
             "https://openscad-mcp.onrender.com/health"
             "https://reddit-mcp.onrender.com/health"
             "https://spotify-mcp.onrender.com/health"
-            "https://strava-mcp.onrender.com/health"
-            "https://swiggy-mcp.onrender.com/health"
             "https://wikipedia-mcp.onrender.com/health"
             "https://wolfram-alpha-mcp.onrender.com/health"
             "https://youtube-mcp.onrender.com/health"
