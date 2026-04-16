@@ -122,6 +122,7 @@ services:
     restart: unless-stopped
     environment:
       PORT: "8000"
+      GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY:-}"
     networks:
       - mcp-net
 
