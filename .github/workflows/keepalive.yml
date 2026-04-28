@@ -21,11 +21,8 @@ jobs:
             "https://discord-mcp.159.65.156.250.nip.io/health"
             "https://openscad-mcp.159.65.156.250.nip.io/health"
             "https://freecad-mcp.159.65.156.250.nip.io/health"
-            "https://blender-mcp.159.65.156.250.nip.io/health"
             "https://youtube-mcp.159.65.156.250.nip.io/health"
-            "https://swiggy-mcp.159.65.156.250.nip.io/health"
             "https://zomato-mcp.159.65.156.250.nip.io/health"
-            "https://wolfram-alpha-mcp.159.65.156.250.nip.io/health"
           )
           for url in "${URLS[@]}"; do
             code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$url" || echo "ERR")

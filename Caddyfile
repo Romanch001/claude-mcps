@@ -38,19 +38,11 @@ freecad-mcp.{$DOMAIN} {
     reverse_proxy freecad-mcp:8000
 }
 
-blender-mcp.{$DOMAIN} {
-    reverse_proxy blender-mcp:8000
-}
-
 youtube-mcp.{$DOMAIN} {
     reverse_proxy youtube-mcp:8000
 }
 
 zomato-mcp.{$DOMAIN} {
     reverse_proxy zomato-mcp:8000
-}
-
-wolfram-alpha-mcp.{$DOMAIN} {
-    reverse_proxy wolfram-alpha-mcp:8000
 }
 
